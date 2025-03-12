@@ -3,9 +3,41 @@ import { defineStore } from 'pinia';
 interface HueState {
     bridgeIp: string | null;
     username: string | null;
-    rooms: any[];
+    rooms: HueRoom[];
     isConnected: boolean;
     isLoading: boolean;
+}
+
+interface RoomStateUpdate {
+    on?: boolean;
+    bri?: number;
+    hue?: number;
+    sat?: number;
+    xy?: [number, number];
+    ct?: number;
+    colormode?: 'ct' | 'xy' | 'hs';
+}
+
+export interface HueRoom {
+    id: string;
+    name: string;
+    type: string;
+    class: string;
+    state: {
+        all_on: boolean;
+        any_on: boolean;
+    };
+    action: {
+        on?: boolean;
+        bri?: number;
+        ct?: number;
+        xy?: [number, number];
+        color?: string;
+        colormode?: 'ct' | 'xy';
+        hue?: number;
+        sat?: number;
+    };
+    lights: string[];
 }
 
 export const useHueStore = defineStore('hue', {
@@ -78,8 +110,8 @@ export const useHueStore = defineStore('hue', {
             try {
                 const response = await fetch('/api/hue/rooms');
                 const roomsData = await response.json();
-                // Extract the data property from each room
-                this.rooms = roomsData.map((room: any) => room.data);
+                // Store the rooms directly since they're already processed by the backend
+                this.rooms = roomsData;
                 return this.rooms;
             } catch (error) {
                 console.error('Failed to fetch rooms:', error);
@@ -89,7 +121,7 @@ export const useHueStore = defineStore('hue', {
             }
         },
 
-        async updateRoomState(roomId: string | number, state: any) {
+        async updateRoomState(roomId: string | number, state: RoomStateUpdate) {
             if (!this.bridgeIp || !this.username) throw new Error('Not connected to bridge');
 
             this.isLoading = true;

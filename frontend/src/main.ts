@@ -2,8 +2,24 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
+import {
+    VApp,
+    VMain,
+    VContainer,
+    VCard,
+    VCardItem,
+    VCardText,
+    VSwitch,
+    VIcon,
+    VBtn,
+    VSheet,
+    VTabs,
+    VTab,
+    VProgressCircular,
+    VAlert,
+    VExpandTransition
+} from 'vuetify/components';
+import { Ripple } from 'vuetify/directives';
 import '@mdi/font/css/materialdesignicons.css';
 
 import App from './App.vue';
@@ -12,8 +28,26 @@ import router from './router';
 const app = createApp(App);
 const pinia = createPinia();
 const vuetify = createVuetify({
-    components,
-    directives,
+    components: {
+        VApp,
+        VMain,
+        VContainer,
+        VCard,
+        VCardItem,
+        VCardText,
+        VSwitch,
+        VIcon,
+        VBtn,
+        VSheet,
+        VTabs,
+        VTab,
+        VProgressCircular,
+        VAlert,
+        VExpandTransition
+    },
+    directives: {
+        Ripple,
+    },
     theme: {
         defaultTheme: 'light',
         themes: {
